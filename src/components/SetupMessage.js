@@ -14,7 +14,7 @@ export default function SetupMessage() {
 
   const checkDatabaseStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/status');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status`);
       const data = await response.json();
       setStatus(data);
     } catch (error) {

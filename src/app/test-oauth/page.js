@@ -20,7 +20,7 @@ export default function TestOAuth() {
   const testDirectAPI = async () => {
     try {
       setResponse('Testing direct API call...');
-      const response = await fetch('http://localhost:5001/api/auth/google', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
