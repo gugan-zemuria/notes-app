@@ -1,0 +1,106 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.modalContent {
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  width: 80vw;
+  height: 80vh;
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 30px;
+  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
+}
+
+.modalTitle {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.closeButton:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.modalBody {
+  padding: 0;
+  height: calc(80vh - 80px);
+  overflow: hidden;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modalContent {
+    width: 85vw;
+    height: 70vh;
+  }
+  
+  .modalHeader {
+    padding: 20px;
+  }
+  
+  .modalTitle {
+    font-size: 1.25rem;
+  }
+  
+  .modalBody {
+    height: calc(70vh - 80px);
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    width: 95vw;
+    height: 80vh;
+  }
+  
+  .modalBody {
+    height: calc(80vh - 80px);
+  }
+}
+
+/* Dark theme specific adjustments */
+[data-theme="dark"] .modalOverlay {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

@@ -1,0 +1,248 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.createLabelButton {
+  background: var(--accent-primary);
+  color: white;
+  width: 130px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.createLabelButton:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.select {
+  height: 30px;
+  width: 140px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.select:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.labelsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.labelChip {
+  padding: 6px 12px;
+  border: 1px solid;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.labelChip:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-small);
+}
+
+.labelChip.selected {
+  color: white !important;
+}
+
+.form {
+  background: var(--bg-secondary);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input {
+  padding: 8px 10px;
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  font-size: 13px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.colorIconRow {
+  display: flex;
+  gap: 16px;
+}
+
+.colorPicker,
+.iconPicker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.colorPicker label,
+.iconPicker label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.colorOptions,
+.iconOptions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.colorOption {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.colorOption:hover {
+  transform: scale(1.1);
+}
+
+.colorOption.selected {
+  border-color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.iconOption {
+  width: 32px;
+  height: 32px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: var(--bg-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.iconOption:hover {
+  background: var(--bg-secondary);
+}
+
+.iconOption.selected {
+  border-color: var(--accent-primary);
+  background: var(--bg-tertiary);
+}
+
+.formButtons {
+  display: flex;
+  gap: 6px;
+}
+
+.submitButton {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 1;
+}
+
+.submitButton:hover {
+  background: var(--accent-hover);
+}
+
+.cancelButton {
+  background: var(--text-secondary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: none;
+  }
+
+  .colorIconRow {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .formButtons {
+    flex-direction: row;
+  }
+
+  .labelsContainer {
+    max-height: 80px;
+  }
+}

@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40px 20px;
+}
+
+.content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.title {
+  font-size: 6rem;
+  font-weight: 900;
+  color: #0070f3;
+  margin: 0;
+  line-height: 1;
+}
+
+.subtitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 16px 0;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0 0 32px 0;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.homeBtn, .createBtn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.homeBtn {
+  background: #6B7280;
+  color: white;
+}
+
+.homeBtn:hover {
+  background: #4B5563;
+}
+
+.createBtn {
+  background: #0070f3;
+  color: white;
+}
+
+.createBtn:hover {
+  background: #0051a2;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 4rem;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .homeBtn, .createBtn {
+    width: 200px;
+    justify-content: center;
+  }
+}

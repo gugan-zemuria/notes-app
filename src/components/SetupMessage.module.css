@@ -1,0 +1,155 @@
+.setupMessage {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
+}
+
+.content {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+.header h3 {
+  color: #92400e;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.dismissBtn {
+  background: none;
+  border: none;
+  color: #92400e;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.dismissBtn:hover {
+  background: rgba(146, 64, 14, 0.1);
+}
+
+.body {
+  color: #92400e;
+}
+
+.body p {
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.steps {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.steps h4 {
+  margin: 0 0 12px 0;
+  color: #78350f;
+  font-size: 16px;
+}
+
+.steps ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.steps li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.steps a {
+  color: #0070f3;
+  text-decoration: underline;
+}
+
+.steps code {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.tableStatus {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.tableStatus h4 {
+  margin: 0 0 12px 0;
+  color: #78350f;
+  font-size: 16px;
+}
+
+.tables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.table {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.table.exists {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.table.missing {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 16px;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .dismissBtn {
+    align-self: flex-end;
+    margin-top: -8px;
+  }
+  
+  .tables {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

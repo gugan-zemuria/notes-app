@@ -1,0 +1,136 @@
+.container {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  margin: 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.clearButton {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clearButton:hover {
+  background: #dc2626;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #0070f3;
+}
+
+.categoryGrid, .labelsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.categoryButton, .labelButton, .statusButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 2px solid;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.statusGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.statusButton {
+  border-color: #6B7280;
+  color: #6B7280;
+}
+
+.statusButton.selected {
+  background-color: #6B7280;
+  color: white;
+}
+
+.categoryButton:hover, .labelButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.categoryButton.selected, .labelButton.selected {
+  color: white !important;
+}
+
+.categoryIcon {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .categoryGrid, .labelsGrid {
+    gap: 6px;
+  }
+  
+  .categoryButton, .labelButton {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
