@@ -10,20 +10,28 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Give more time for user context to load after OAuth
-    const checkAuth = async () => {
-      if (!loading && !user) {
-        // Wait a bit more for user context to update
-        setTimeout(() => {
-          if (!user) {
-            console.log('No user found after timeout, redirecting to login');
-            router.push('/login');
-          }
-        }, 2000);
-      }
-    };
+    // Check if this is right after OAuth success
+    const oauthSuccess = localStorage.getItem('oauth-success');
     
-    checkAuth();
+    if (oauthSuccess) {
+      console.log('Dashboard: OAuth success detected, giving time for user context to load...');
+      localStorage.removeItem('oauth-success');
+      
+      // Give extra time for user context to load after OAuth
+      setTimeout(() => {
+        if (!user) {
+          console.log('Dashboard: User context still not loaded after OAuth, but staying on dashboard');
+          // Don't redirect - user is authenticated via OAuth
+        }
+      }, 5000);
+      return;
+    }
+    
+    // Normal auth check - only redirect if not loading and no user
+    if (!loading && !user) {
+      console.log('Dashboard: No user found, redirecting to login');
+      router.push('/login');
+    }
   }, [user, loading, router]);
 
   const handleSignOut = async () => {

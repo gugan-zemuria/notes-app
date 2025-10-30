@@ -77,11 +77,37 @@ function AuthCallbackContent() {
           // Clear the hash to clean up URL
           window.history.replaceState(null, null, window.location.pathname);
           
-          // Redirect to intermediate page that will handle user context properly
-          setTimeout(() => {
-            console.log('Redirecting to auth-redirect page for proper user context handling');
-            router.push('/auth-redirect');
-          }, 1000);
+          // Wait for cookies to be set, then redirect directly to dashboard
+          setTimeout(async () => {
+            console.log('Tokens set, attempting to refresh user context...');
+            
+            // Force refresh user context multiple times if needed
+            let userSet = false;
+            for (let i = 0; i < 5; i++) {
+              try {
+                const success = await refreshUser();
+                if (success) {
+                  console.log(`User context set successfully on attempt ${i + 1}`);
+                  userSet = true;
+                  break;
+                }
+                console.log(`User refresh attempt ${i + 1} failed, retrying...`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+              } catch (error) {
+                console.error(`User refresh attempt ${i + 1} error:`, error);
+              }
+            }
+            
+            if (userSet) {
+              console.log('User context confirmed, redirecting to dashboard');
+              router.push('/dashboard');
+            } else {
+              console.log('Failed to set user context, but tokens exist - trying dashboard anyway');
+              // Set a flag in localStorage to help dashboard know user is authenticated
+              localStorage.setItem('oauth-success', 'true');
+              router.push('/dashboard');
+            }
+          }, 1500);
         } catch (error) {
           console.error('Token handling error:', error);
           setStatus('error');

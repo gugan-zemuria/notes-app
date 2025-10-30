@@ -14,11 +14,13 @@ export const debugTokens = () => {
   console.log('Access token present:', !!cookies['sb-access-token']);
   console.log('Refresh token present:', !!cookies['sb-refresh-token']);
   
-  // Check localStorage (in case tokens are stored there)
-  const localStorageKeys = Object.keys(localStorage).filter(key => 
-    key.includes('supabase') || key.includes('auth') || key.includes('token')
-  );
-  console.log('LocalStorage auth keys:', localStorageKeys);
+  // Check localStorage for tokens
+  const localStorageTokens = {
+    'sb-access-token': localStorage.getItem('sb-access-token'),
+    'sb-refresh-token': localStorage.getItem('sb-refresh-token'),
+    'sb-token-expiry': localStorage.getItem('sb-token-expiry')
+  };
+  console.log('LocalStorage tokens:', localStorageTokens);
   
   // Check sessionStorage
   const sessionStorageKeys = Object.keys(sessionStorage).filter(key => 
@@ -53,21 +55,54 @@ export const setTokensFromHash = () => {
   if (accessToken) {
     console.log('Setting tokens from URL hash...');
     
-    // Set cookies manually as fallback
-    const expires = new Date();
-    expires.setTime(expires.getTime() + (24 * 60 * 60 * 1000)); // 24 hours
-    
-    document.cookie = `sb-access-token=${accessToken}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
-    
+    // Store tokens in localStorage (more reliable than cookies for cross-origin)
+    localStorage.setItem('sb-access-token', accessToken);
     if (refreshToken) {
-      const refreshExpires = new Date();
-      refreshExpires.setTime(refreshExpires.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
-      document.cookie = `sb-refresh-token=${refreshToken}; expires=${refreshExpires.toUTCString()}; path=/; SameSite=Lax`;
+      localStorage.setItem('sb-refresh-token', refreshToken);
     }
     
-    console.log('Tokens set in cookies');
+    // Also set expiry
+    const expiresIn = hashParams.get('expires_in') || '3600'; // Default 1 hour
+    const expiryTime = Date.now() + (parseInt(expiresIn) * 1000);
+    localStorage.setItem('sb-token-expiry', expiryTime.toString());
+    
+    console.log('Tokens stored in localStorage');
+    
+    // Trigger auth context refresh
+    localStorage.setItem('oauth-tokens-updated', Date.now().toString());
+    setTimeout(() => {
+      localStorage.removeItem('oauth-tokens-updated');
+    }, 1000);
+    
     return { accessToken, refreshToken };
   }
   
   return null;
+};
+
+// Helper function to get stored token
+export const getStoredToken = () => {
+  const token = localStorage.getItem('sb-access-token');
+  const expiry = localStorage.getItem('sb-token-expiry');
+  
+  if (!token) return null;
+  
+  // Check if token is expired
+  if (expiry && Date.now() > parseInt(expiry)) {
+    console.log('Token expired, clearing storage');
+    localStorage.removeItem('sb-access-token');
+    localStorage.removeItem('sb-refresh-token');
+    localStorage.removeItem('sb-token-expiry');
+    return null;
+  }
+  
+  return token;
+};
+
+// Helper function to clear tokens
+export const clearStoredTokens = () => {
+  localStorage.removeItem('sb-access-token');
+  localStorage.removeItem('sb-refresh-token');
+  localStorage.removeItem('sb-token-expiry');
+  console.log('Tokens cleared from localStorage');
 };

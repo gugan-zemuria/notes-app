@@ -21,19 +21,36 @@ export const AuthProvider = ({ children }) => {
     // Check if user is already logged in
     const checkAuth = async () => {
       try {
+        console.log('AuthContext: Checking authentication status...');
         const { data, error } = await auth.getCurrentUser();
         if (!error && data?.user) {
+          console.log('AuthContext: User found:', data.user.email);
           setUser(data.user);
+        } else {
+          console.log('AuthContext: No user found:', error);
         }
       } catch (error) {
         // Silently handle auth check errors (user not logged in)
-        console.log('No active session found');
+        console.log('AuthContext: No active session found', error.message);
       } finally {
         setLoading(false);
       }
     };
 
     checkAuth();
+    
+    // Also listen for storage events (when tokens are set from OAuth)
+    const handleStorageChange = (e) => {
+      if (e.key === 'oauth-tokens-updated') {
+        console.log('AuthContext: OAuth tokens updated, refreshing user...');
+        setTimeout(() => {
+          checkAuth();
+        }, 500);
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const signUp = async (email, password) => {
