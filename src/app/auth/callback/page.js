@@ -77,21 +77,10 @@ function AuthCallbackContent() {
           // Clear the hash to clean up URL
           window.history.replaceState(null, null, window.location.pathname);
           
-          // Wait a moment for cookies to be set, then refresh user context
-          setTimeout(async () => {
-            try {
-              const userRefreshed = await refreshUser();
-              if (userRefreshed) {
-                router.push('/dashboard');
-              } else {
-                // Even if refresh failed, if we have tokens, try going to dashboard
-                console.log('User refresh failed, but tokens exist - proceeding to dashboard');
-                router.push('/dashboard');
-              }
-            } catch (error) {
-              console.error('Error during user refresh:', error);
-              router.push('/dashboard'); // Try dashboard anyway
-            }
+          // Redirect to intermediate page that will handle user context properly
+          setTimeout(() => {
+            console.log('Redirecting to auth-redirect page for proper user context handling');
+            router.push('/auth-redirect');
           }, 1000);
         } catch (error) {
           console.error('Token handling error:', error);
