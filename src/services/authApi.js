@@ -86,6 +86,19 @@ export const auth = {
     } catch (error) {
       return { data: null, error: error.response?.data?.error || error.message };
     }
+  },
+
+  // Handle token authentication (for implicit flow)
+  authenticateWithToken: async (accessToken, refreshToken) => {
+    try {
+      const response = await authApi.post('/auth/token', { 
+        access_token: accessToken, 
+        refresh_token: refreshToken 
+      });
+      return { data: response.data, error: null };
+    } catch (error) {
+      return { data: null, error: error.response?.data?.error || error.message };
+    }
   }
 };
 

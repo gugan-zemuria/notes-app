@@ -37,12 +37,21 @@ function AuthCallbackContent() {
       // If we have tokens directly from hash (Supabase implicit flow)
       if (accessToken) {
         try {
-          // Set tokens and get user info
-          document.cookie = `sb-access-token=${accessToken}; path=/; max-age=86400; SameSite=Lax`;
-          if (refreshToken) {
-            document.cookie = `sb-refresh-token=${refreshToken}; path=/; max-age=604800; SameSite=Lax`;
+          console.log('Processing tokens from hash...');
+          
+          // Authenticate with the server using the tokens
+          const { data, error: tokenError } = await auth.authenticateWithToken(accessToken, refreshToken);
+          
+          if (tokenError) {
+            console.error('Token authentication error:', tokenError);
+            setStatus('error');
+            setTimeout(() => {
+              router.push('/login?error=' + encodeURIComponent(tokenError));
+            }, 2000);
+            return;
           }
           
+          console.log('Token authentication successful');
           setStatus('success');
           await refreshUser(); // Refresh user context
           setTimeout(() => {
