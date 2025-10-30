@@ -8,18 +8,7 @@ const authApi = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Keep for backward compatibility
-});
-
-// Add request interceptor to include Authorization header
-authApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('sb-access-token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
+  withCredentials: true, // Important for cookies
 });
 
 export const auth = {
@@ -59,7 +48,15 @@ export const auth = {
     }
   },
 
-
+  // Sign out
+  signOut: async () => {
+    try {
+      const response = await authApi.post('/auth/signout');
+      return { data: response.data, error: null };
+    } catch (error) {
+      return { data: null, error: error.response?.data?.error || error.message };
+    }
+  },
 
   // Get current user
   getCurrentUser: async () => {
@@ -97,39 +94,12 @@ export const auth = {
   // Handle token authentication (for implicit flow)
   authenticateWithToken: async (accessToken, refreshToken) => {
     try {
-      // Store tokens in localStorage first
-      localStorage.setItem('sb-access-token', accessToken);
-      if (refreshToken) {
-        localStorage.setItem('sb-refresh-token', refreshToken);
-      }
-      
       const response = await authApi.post('/auth/token', { 
         access_token: accessToken, 
         refresh_token: refreshToken 
       });
       return { data: response.data, error: null };
     } catch (error) {
-      return { data: null, error: error.response?.data?.error || error.message };
-    }
-  },
-
-  // Sign out and clear tokens
-  signOut: async () => {
-    try {
-      const response = await authApi.post('/auth/signout');
-      
-      // Clear tokens from localStorage
-      localStorage.removeItem('sb-access-token');
-      localStorage.removeItem('sb-refresh-token');
-      localStorage.removeItem('sb-token-expiry');
-      
-      return { data: response.data, error: null };
-    } catch (error) {
-      // Clear tokens even if server request fails
-      localStorage.removeItem('sb-access-token');
-      localStorage.removeItem('sb-refresh-token');
-      localStorage.removeItem('sb-token-expiry');
-      
       return { data: null, error: error.response?.data?.error || error.message };
     }
   }
