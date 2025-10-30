@@ -61,9 +61,12 @@ export const auth = {
   // Get current user
   getCurrentUser: async () => {
     try {
+      console.log('Making getCurrentUser request...');
       const response = await authApi.get('/auth/user');
+      console.log('getCurrentUser response:', response.status, response.data);
       return { data: response.data, error: null };
     } catch (error) {
+      console.log('getCurrentUser error:', error.response?.status, error.response?.data);
       return { data: null, error: error.response?.data?.error || error.message };
     }
   },

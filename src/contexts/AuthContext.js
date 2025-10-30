@@ -65,14 +65,31 @@ export const AuthProvider = ({ children }) => {
     return await auth.resetPassword(email);
   };
 
-  const refreshUser = async () => {
+  const refreshUser = async (retries = 3) => {
     try {
+      console.log('Refreshing user context...');
       const { data, error } = await auth.getCurrentUser();
       if (!error && data?.user) {
+        console.log('User context updated:', data.user.email);
         setUser(data.user);
+        return true;
+      } else if (error && retries > 0) {
+        console.log(`Retrying user refresh... (${retries} attempts left)`);
+        // Wait a bit and retry
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return await refreshUser(retries - 1);
+      } else {
+        console.log('No user found or max retries reached');
+        setUser(null);
+        return false;
       }
     } catch (error) {
       console.log('Error refreshing user:', error);
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return await refreshUser(retries - 1);
+      }
+      return false;
     }
   };
 

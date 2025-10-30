@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../../contexts/AuthContext';
 import { auth } from '../../../services/authApi';
+import { debugTokens, setTokensFromHash } from '../../../utils/tokenDebug';
 
 function AuthCallbackContent() {
   const [status, setStatus] = useState('processing');
@@ -13,6 +14,10 @@ function AuthCallbackContent() {
 
   useEffect(() => {
     const handleCallback = async () => {
+      // Debug current token state
+      console.log('=== OAuth Callback Debug ===');
+      debugTokens();
+      
       // Check URL parameters (query params)
       const error = searchParams.get('error');
       const code = searchParams.get('code');
@@ -24,7 +29,7 @@ function AuthCallbackContent() {
       const accessToken = hashParams.get('access_token');
       const refreshToken = hashParams.get('refresh_token');
       
-      console.log('Callback params:', { error, code, hashError, hashCode, accessToken });
+      console.log('Callback params:', { error, code, hashError, hashCode, hasAccessToken: !!accessToken, hasRefreshToken: !!refreshToken });
       
       if (error || hashError) {
         setStatus('error');
@@ -37,7 +42,10 @@ function AuthCallbackContent() {
       // If we have tokens directly from hash (Supabase implicit flow)
       if (accessToken) {
         try {
-          console.log('Processing tokens from hash...');
+          console.log('Processing tokens from hash...', { hasAccessToken: !!accessToken, hasRefreshToken: !!refreshToken });
+          
+          // First, set tokens in cookies as fallback
+          setTokensFromHash();
           
           // Authenticate with the server using the tokens
           const { data, error: tokenError } = await auth.authenticateWithToken(accessToken, refreshToken);
@@ -51,12 +59,22 @@ function AuthCallbackContent() {
             return;
           }
           
-          console.log('Token authentication successful');
+          console.log('Token authentication successful:', data);
           setStatus('success');
-          await refreshUser(); // Refresh user context
-          setTimeout(() => {
-            router.push('/dashboard');
-          }, 1000);
+          
+          // Clear the hash to clean up URL
+          window.history.replaceState(null, null, window.location.pathname);
+          
+          // Wait a moment for cookies to be set, then refresh user context
+          setTimeout(async () => {
+            const userRefreshed = await refreshUser();
+            if (userRefreshed) {
+              router.push('/dashboard');
+            } else {
+              console.error('Failed to refresh user context');
+              router.push('/login?error=context_refresh_failed');
+            }
+          }, 1500);
         } catch (error) {
           console.error('Token handling error:', error);
           setStatus('error');
