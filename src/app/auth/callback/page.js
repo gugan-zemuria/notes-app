@@ -16,7 +16,7 @@ function AuthCallbackContent() {
     const handleCallback = async () => {
       // Debug current token state
       console.log('=== OAuth Callback Debug ===');
-      debugTokens();
+      const tokenInfo = debugTokens();
       
       // Check URL parameters (query params)
       const error = searchParams.get('error');
@@ -30,6 +30,18 @@ function AuthCallbackContent() {
       const refreshToken = hashParams.get('refresh_token');
       
       console.log('Callback params:', { error, code, hashError, hashCode, hasAccessToken: !!accessToken, hasRefreshToken: !!refreshToken });
+      
+      // If we already have valid cookies and no tokens in URL, user is likely already authenticated
+      if (!accessToken && !code && !hashCode && !error && !hashError) {
+        if (tokenInfo.cookies['sb-access-token']) {
+          console.log('User already has valid tokens, redirecting to dashboard...');
+          setStatus('success');
+          setTimeout(() => {
+            router.push('/dashboard');
+          }, 1000);
+          return;
+        }
+      }
       
       if (error || hashError) {
         setStatus('error');
@@ -67,14 +79,20 @@ function AuthCallbackContent() {
           
           // Wait a moment for cookies to be set, then refresh user context
           setTimeout(async () => {
-            const userRefreshed = await refreshUser();
-            if (userRefreshed) {
-              router.push('/dashboard');
-            } else {
-              console.error('Failed to refresh user context');
-              router.push('/login?error=context_refresh_failed');
+            try {
+              const userRefreshed = await refreshUser();
+              if (userRefreshed) {
+                router.push('/dashboard');
+              } else {
+                // Even if refresh failed, if we have tokens, try going to dashboard
+                console.log('User refresh failed, but tokens exist - proceeding to dashboard');
+                router.push('/dashboard');
+              }
+            } catch (error) {
+              console.error('Error during user refresh:', error);
+              router.push('/dashboard'); // Try dashboard anyway
             }
-          }, 1500);
+          }, 1000);
         } catch (error) {
           console.error('Token handling error:', error);
           setStatus('error');
