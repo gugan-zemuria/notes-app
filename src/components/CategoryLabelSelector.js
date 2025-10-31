@@ -15,20 +15,8 @@ export default function CategoryLabelSelector({
   const [showLabelForm, setShowLabelForm] = useState(false);
   const [newLabel, setNewLabel] = useState({ name: '', color: '#10B981' });
 
-  // Default categories to show when no categories are loaded
-  const defaultCategories = [
-    { id: 1, name: 'Personal', color: '#3B82F6', icon: '👤' },      // Blue
-    { id: 2, name: 'Work', color: '#EF4444', icon: '💼' },              // Red
-    { id: 3, name: 'Ideas', color: '#8B5CF6', icon: '💡' },            // Purple
-    { id: 4, name: 'Tasks', color: '#F59E0B', icon: '✅' },            // Orange
-    { id: 5, name: 'Projects', color: '#10B981', icon: '🚀' },      // Green
-    { id: 6, name: 'Learning', color: '#F97316', icon: '📚' },      // Orange
-    { id: 7, name: 'Health', color: '#EC4899', icon: '🏥' },          // Pink
-    { id: 8, name: 'Finance', color: '#06B6D4', icon: '💰' }         // Cyan
-  ];
-
-  // Always use default categories for now (can be changed later to use database categories)
-  const displayCategories = defaultCategories;
+  // Use actual categories from database, fallback to empty array if none exist
+  const displayCategories = categories || [];
 
 
 
@@ -65,18 +53,25 @@ export default function CategoryLabelSelector({
           <label className={styles.label}>Category</label>
         </div>
         
-        <select 
-          value={selectedCategory || ''} 
-          onChange={(e) => onCategoryChange(e.target.value ? parseInt(e.target.value) : null)}
-          className={styles.select}
-        >
-          <option value="">No Category</option>
-          {displayCategories.map(category => (
-            <option key={category.id} value={category.id}>
-              {category.icon} {category.name}
-            </option>
-          ))}
-        </select>
+        {displayCategories.length > 0 ? (
+          <select 
+            value={selectedCategory || ''} 
+            onChange={(e) => onCategoryChange(e.target.value ? parseInt(e.target.value) : null)}
+            className={styles.select}
+          >
+            <option value="">No Category</option>
+            {displayCategories.map(category => (
+              <option key={category.id} value={category.id}>
+                {category.icon} {category.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <div className={styles.noCategoriesMessage}>
+            <p>No categories available. Categories need to be created in the database first.</p>
+            <p>Please contact your administrator or check the database setup.</p>
+          </div>
+        )}
       </div>
 
       {/* Labels Selection */}
