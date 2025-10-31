@@ -15,8 +15,35 @@ export default function CategoryLabelSelector({
   const [showLabelForm, setShowLabelForm] = useState(false);
   const [newLabel, setNewLabel] = useState({ name: '', color: '#10B981' });
 
-  // Use actual categories from database, fallback to empty array if none exist
-  const displayCategories = categories || [];
+  // Default categories that always show
+  const defaultCategories = [
+    { id: 'personal', name: 'Personal', color: '#3B82F6', icon: '👤' },
+    { id: 'work', name: 'Work', color: '#EF4444', icon: '💼' },
+    { id: 'ideas', name: 'Ideas', color: '#8B5CF6', icon: '💡' },
+    { id: 'tasks', name: 'Tasks', color: '#F59E0B', icon: '✅' },
+    { id: 'projects', name: 'Projects', color: '#10B981', icon: '🚀' },
+    { id: 'learning', name: 'Learning', color: '#F97316', icon: '📚' },
+    { id: 'health', name: 'Health', color: '#EC4899', icon: '🏥' },
+    { id: 'finance', name: 'Finance', color: '#06B6D4', icon: '💰' }
+  ];
+
+  // Use database categories if available, otherwise use defaults
+  const displayCategories = (categories && categories.length > 0) ? categories : defaultCategories;
+
+  // Default labels that always show
+  const defaultLabels = [
+    { id: 'important', name: 'Important', color: '#EF4444' },
+    { id: 'urgent', name: 'Urgent', color: '#F59E0B' },
+    { id: 'review', name: 'Review', color: '#8B5CF6' },
+    { id: 'archive', name: 'Archive', color: '#6B7280' },
+    { id: 'draft', name: 'Draft', color: '#10B981' },
+    { id: 'progress', name: 'In Progress', color: '#3B82F6' },
+    { id: 'completed', name: 'Completed', color: '#059669' },
+    { id: 'hold', name: 'On Hold', color: '#DC2626' }
+  ];
+
+  // Use database labels if available, otherwise use defaults
+  const displayLabels = (labels && labels.length > 0) ? labels : defaultLabels;
 
 
 
@@ -53,25 +80,18 @@ export default function CategoryLabelSelector({
           <label className={styles.label}>Category</label>
         </div>
         
-        {displayCategories.length > 0 ? (
-          <select 
-            value={selectedCategory || ''} 
-            onChange={(e) => onCategoryChange(e.target.value ? parseInt(e.target.value) : null)}
-            className={styles.select}
-          >
-            <option value="">No Category</option>
-            {displayCategories.map(category => (
-              <option key={category.id} value={category.id}>
-                {category.icon} {category.name}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <div className={styles.noCategoriesMessage}>
-            <p>No categories available. Categories need to be created in the database first.</p>
-            <p>Please contact your administrator or check the database setup.</p>
-          </div>
-        )}
+        <select 
+          value={selectedCategory || ''} 
+          onChange={(e) => onCategoryChange(e.target.value || null)}
+          className={styles.select}
+        >
+          <option value="">No Category</option>
+          {displayCategories.map(category => (
+            <option key={category.id} value={category.id}>
+              {category.icon} {category.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Labels Selection */}
@@ -81,7 +101,7 @@ export default function CategoryLabelSelector({
         </div>
         
         <div className={styles.labelsContainer}>
-          {labels.map(label => (
+          {displayLabels.map(label => (
             <button
               key={label.id}
               type="button"
