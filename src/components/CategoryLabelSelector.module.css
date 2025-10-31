@@ -35,12 +35,13 @@
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-small);
 }
 
 .createLabelButton:hover {
   background: var(--accent-hover);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-large);
+  transform: translateY(-1px);
 }
 
 .select {
@@ -54,17 +55,18 @@
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-small);
 }
 
 .select:hover {
   border-color: var(--accent-primary);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-large);
 }
 
 .select:focus {
   outline: none;
   border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
 .labelsContainer {
@@ -89,6 +91,7 @@
 
 .labelChip:hover {
   box-shadow: var(--shadow-small);
+  transform: translateY(-1px);
 }
 
 .labelChip.selected {
@@ -104,7 +107,7 @@
   flex-direction: column;
   gap: 10px;
   margin-top: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-large);
 }
 
 .input {
@@ -226,6 +229,103 @@
   background: var(--text-primary);
 }
 
+/* Additional Theme-Aware Styles */
+.input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.submitButton:focus,
+.cancelButton:focus,
+.createLabelButton:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.labelsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.labelsContainer::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.labelsContainer::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 3px;
+}
+
+.labelsContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Status and Feedback Styles */
+.success {
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.error {
+  color: var(--error);
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.warning {
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.info {
+  color: var(--info);
+  background: var(--info-bg);
+  border: 1px solid var(--info-border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* Loading State */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--accent-primary);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @media (max-width: 768px) {
   .container {
     max-width: none;
@@ -242,5 +342,10 @@
 
   .labelsContainer {
     max-height: 80px;
+  }
+  
+  .createLabelButton {
+    width: 100%;
+    margin-left: 0;
   }
 }
