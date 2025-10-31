@@ -130,6 +130,17 @@ export default function CreateNote() {
 
     setLoading(true);
     try {
+      console.log('=== CREATE NOTE DEBUG ===');
+      console.log('User:', user);
+      console.log('User ID:', user?.id);
+      console.log('User Email:', user?.email);
+      
+      if (!user) {
+        console.error('No user found - redirecting to login');
+        router.push('/login');
+        return;
+      }
+
       const noteData = {
         title,
         content: isEncrypted ? null : content,
@@ -141,7 +152,10 @@ export default function CreateNote() {
         is_encrypted: isEncrypted
       };
 
-      await createNote(noteData);
+      console.log('Note data to create:', noteData);
+      
+      const result = await createNote(noteData);
+      console.log('Create note result:', result);
       
       // Clear the form
       setTitle('');
@@ -159,6 +173,7 @@ export default function CreateNote() {
       router.push('/');
     } catch (error) {
       console.error('Error creating note:', error);
+      console.error('Error details:', error.response?.data);
     }
     setLoading(false);
   };
