@@ -49,7 +49,7 @@ export default function Home() {
     return (
       <div className={styles.loading}>
         <div className={styles.spinner}></div>
-        <p>Loading...</p>
+        <p>Checking authentication...</p>
       </div>
     );
   }

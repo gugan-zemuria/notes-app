@@ -94,6 +94,7 @@ export default function SignupPage() {
               required
               disabled={loading}
               placeholder="Enter your email"
+              autoComplete="email"
             />
           </div>
 
@@ -108,6 +109,7 @@ export default function SignupPage() {
               disabled={loading}
               placeholder="Enter your password"
               minLength={6}
+              autoComplete="new-password"
             />
           </div>
 
@@ -122,6 +124,7 @@ export default function SignupPage() {
               disabled={loading}
               placeholder="Confirm your password"
               minLength={6}
+              autoComplete="new-password"
             />
           </div>
 

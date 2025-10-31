@@ -145,6 +145,7 @@ export default function PublicNote() {
                     onChange={(e) => setDecryptionKey(e.target.value)}
                     className={styles.decryptionInput}
                     onKeyPress={(e) => e.key === 'Enter' && handleDecrypt()}
+                    autoComplete="current-password"
                   />
                   <button onClick={handleDecrypt} className={styles.decryptBtn}>
                     Decrypt

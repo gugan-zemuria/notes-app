@@ -33,7 +33,9 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    checkAuth();
+    // Add a small delay to allow cookies to be set properly after OAuth
+    const timer = setTimeout(checkAuth, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   const signUp = async (email, password) => {

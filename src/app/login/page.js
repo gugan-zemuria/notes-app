@@ -78,6 +78,7 @@ export default function LoginPage() {
               required
               disabled={loading}
               placeholder="Enter your email"
+              autoComplete="email"
             />
           </div>
 
@@ -91,6 +92,7 @@ export default function LoginPage() {
               required
               disabled={loading}
               placeholder="Enter your password"
+              autoComplete="current-password"
             />
           </div>
 

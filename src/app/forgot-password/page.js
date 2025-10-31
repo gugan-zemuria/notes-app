@@ -61,6 +61,7 @@ export default function ForgotPasswordPage() {
               required
               disabled={loading}
               placeholder="Enter your email"
+              autoComplete="email"
             />
           </div>
 

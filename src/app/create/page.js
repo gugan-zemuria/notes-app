@@ -268,6 +268,7 @@ export default function CreateNote() {
                     onChange={(e) => setEncryptionKey(e.target.value)}
                     className={styles.encryptionInput}
                     required
+                    autoComplete="new-password"
                   />
                 )}
               </div>

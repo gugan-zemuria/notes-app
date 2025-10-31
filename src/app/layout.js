@@ -18,6 +18,8 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "My Notes App - Organize Your Thoughts",
   description: "Create, organize, and share your notes with categories, labels, encryption, and more.",
+  viewport: "width=device-width, initial-scale=1",
+  robots: "index, follow",
 };
 
 export default function RootLayout({ children }) {

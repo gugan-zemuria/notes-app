@@ -10,20 +10,11 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Give more time for user context to load after OAuth
-    const checkAuth = async () => {
-      if (!loading && !user) {
-        // Wait a bit more for user context to update
-        setTimeout(() => {
-          if (!user) {
-            console.log('No user found after timeout, redirecting to login');
-            router.push('/login');
-          }
-        }, 2000);
-      }
-    };
-    
-    checkAuth();
+    // Only redirect to login if we're sure there's no user and not loading
+    if (!loading && !user) {
+      console.log('No user found and not loading, redirecting to login');
+      router.push('/login');
+    }
   }, [user, loading, router]);
 
   const handleSignOut = async () => {

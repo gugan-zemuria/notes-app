@@ -34,11 +34,12 @@ function AuthCallbackContent() {
       // If we already have valid cookies and no tokens in URL, user is likely already authenticated
       if (!accessToken && !code && !hashCode && !error && !hashError) {
         if (tokenInfo.cookies['sb-access-token']) {
-          console.log('User already has valid tokens, redirecting to dashboard...');
+          console.log('User already has valid tokens, refreshing context and redirecting...');
+          await refreshUser();
           setStatus('success');
           setTimeout(() => {
             router.push('/dashboard');
-          }, 1000);
+          }, 500);
           return;
         }
       }
@@ -77,10 +78,11 @@ function AuthCallbackContent() {
           // Clear the hash to clean up URL
           window.history.replaceState(null, null, window.location.pathname);
           
-          // Redirect to intermediate page that will handle user context properly
+          // Refresh user context and redirect to dashboard
+          await refreshUser();
           setTimeout(() => {
-            console.log('Redirecting to auth-redirect page for proper user context handling');
-            router.push('/auth-redirect');
+            console.log('Redirecting to dashboard after successful authentication');
+            router.push('/dashboard');
           }, 1000);
         } catch (error) {
           console.error('Token handling error:', error);
