@@ -17,14 +17,14 @@ export default function CategoryLabelSelector({
 
   // Default categories to show when no categories are loaded
   const defaultCategories = [
-    { id: 'personal', name: 'Personal', color: '#3B82F6', icon: '👤' },      // Blue
-    { id: 'work', name: 'Work', color: '#EF4444', icon: '💼' },              // Red
-    { id: 'ideas', name: 'Ideas', color: '#8B5CF6', icon: '💡' },            // Purple
-    { id: 'tasks', name: 'Tasks', color: '#F59E0B', icon: '✅' },            // Orange
-    { id: 'projects', name: 'Projects', color: '#10B981', icon: '🚀' },      // Green
-    { id: 'learning', name: 'Learning', color: '#F97316', icon: '📚' },      // Orange
-    { id: 'health', name: 'Health', color: '#EC4899', icon: '🏥' },          // Pink
-    { id: 'finance', name: 'Finance', color: '#06B6D4', icon: '💰' }         // Cyan
+    { id: 1, name: 'Personal', color: '#3B82F6', icon: '👤' },      // Blue
+    { id: 2, name: 'Work', color: '#EF4444', icon: '💼' },              // Red
+    { id: 3, name: 'Ideas', color: '#8B5CF6', icon: '💡' },            // Purple
+    { id: 4, name: 'Tasks', color: '#F59E0B', icon: '✅' },            // Orange
+    { id: 5, name: 'Projects', color: '#10B981', icon: '🚀' },      // Green
+    { id: 6, name: 'Learning', color: '#F97316', icon: '📚' },      // Orange
+    { id: 7, name: 'Health', color: '#EC4899', icon: '🏥' },          // Pink
+    { id: 8, name: 'Finance', color: '#06B6D4', icon: '💰' }         // Cyan
   ];
 
   // Always use default categories for now (can be changed later to use database categories)
@@ -41,14 +41,16 @@ export default function CategoryLabelSelector({
       setShowLabelForm(false);
     } catch (error) {
       console.error('Error creating label:', error);
-      alert('Labels table not found. Please run the database schema first.');
+      alert('Error creating label: ' + (error.message || 'Unknown error'));
     }
   };
 
   const handleLabelToggle = (labelId) => {
+    console.log('Toggling label:', labelId, 'Current selected:', selectedLabels);
     const newSelectedLabels = selectedLabels.includes(labelId)
       ? selectedLabels.filter(id => id !== labelId)
       : [...selectedLabels, labelId];
+    console.log('New selected labels:', newSelectedLabels);
     onLabelsChange(newSelectedLabels);
   };
 
@@ -65,7 +67,7 @@ export default function CategoryLabelSelector({
         
         <select 
           value={selectedCategory || ''} 
-          onChange={(e) => onCategoryChange(e.target.value || null)}
+          onChange={(e) => onCategoryChange(e.target.value ? parseInt(e.target.value) : null)}
           className={styles.select}
         >
           <option value="">No Category</option>
